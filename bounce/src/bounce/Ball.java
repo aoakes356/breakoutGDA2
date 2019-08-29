@@ -1,5 +1,6 @@
 package bounce;
 
+import bounce.resource.GameObject;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -10,7 +11,7 @@ import jig.Vector;
  * cracks for a nice visual effect.
  * 
  */
- class Ball extends Entity {
+ class Ball extends GameObject {
 
 	private Vector velocity;
 	private int countdown;
@@ -47,12 +48,22 @@ import jig.Vector;
 		velocity = velocity.bounce(surfaceTangent);
 	}
 
+	@Override
+  public void collide(float tangent){
+    bounce(tangent);
+  }
+  // TODO: Make this badboy.
+  public void collide(GameObject obj){
+
+  }
+
 	/**
 	 * Update the Ball based on how much time has passed...
 	 * 
 	 * @param delta
 	 *            the number of milliseconds since the last update
 	 */
+	@Override
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
 		if (countdown > 0) {

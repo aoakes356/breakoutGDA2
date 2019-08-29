@@ -2,6 +2,8 @@ package bounce;
 
 import java.util.Iterator;
 
+import bounce.resource.GameObject;
+import jig.Entity;
 import jig.Vector;
 
 import org.newdawn.slick.GameContainer;
@@ -66,22 +68,34 @@ class PlayingState extends BasicGameState {
 			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(+.001f, 0f)));
 		}
 		// bounce the ball...
-		boolean bounced = false;
-		if (bg.ball.getCoarseGrainedMaxX() > bg.ScreenWidth
-				|| bg.ball.getCoarseGrainedMinX() < 0) {
-			bg.ball.bounce(90);
-			bounced = true;
-		} else if (bg.ball.getCoarseGrainedMaxY() > bg.ScreenHeight
-				|| bg.ball.getCoarseGrainedMinY() < 0) {
-			bg.ball.bounce(0);
-			bounced = true;
-		}
-		if (bounced) {
-			bg.explosions.add(new Bang(bg.ball.getX(), bg.ball.getY()));
-			bounces++;
-		}
-		bg.ball.update(delta);
-
+    GameObject obj;
+		boolean bounced;
+    for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
+      obj = e.next();
+      bounced = false;
+      if (obj.getCoarseGrainedMaxX() > bg.ScreenWidth){
+        obj.translate( -obj.getCoarseGrainedMaxX()+bg.ScreenWidth-.001f,0.0f);
+        obj.collide(90.0f);
+        bounced = true;
+      }else if(obj.getCoarseGrainedMinX() < 0) {
+        obj.translate(-obj.getCoarseGrainedMinX()+.001f, 0.0f);
+        obj.collide(90.0f);
+        bounced = true;
+      } else if (obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
+        obj.translate( 0.0f,-obj.getCoarseGrainedMaxY()+bg.ScreenHeight-.001f);
+        obj.collide(0);
+        bounced = true;
+      }else if(obj.getCoarseGrainedMinY() < 0) {
+        obj.translate(0.0f, -obj.getCoarseGrainedMinY()+.001f);
+        obj.collide(0);
+        bounced = true;
+      }
+      if (bounced) {
+        bg.explosions.add(new Bang(obj.getX(), obj.getY()));
+        bounces++;
+      }
+      obj.update(delta);
+    }
 		// check if there are any finished explosions, if so remove them
 		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
 			if (!i.next().isActive()) {
@@ -89,7 +103,7 @@ class PlayingState extends BasicGameState {
 			}
 		}
 
-		if (bounces >= 10) {
+		if (bounces >= 10000) {
 			((GameOverState)game.getState(BounceGame.GAMEOVERSTATE)).setUserScore(bounces);
 			game.enterState(BounceGame.GAMEOVERSTATE);
 		}

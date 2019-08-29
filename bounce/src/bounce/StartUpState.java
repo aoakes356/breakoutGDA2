@@ -2,6 +2,7 @@ package bounce;
 
 import java.util.Iterator;
 
+import bounce.resource.GameObject;
 import jig.ResourceManager;
 
 import org.newdawn.slick.GameContainer;
@@ -58,20 +59,34 @@ class StartUpState extends BasicGameState {
 			bg.enterState(BounceGame.PLAYINGSTATE);	
 		
 		// bounce the ball...
-		boolean bounced = false;
-		if (bg.ball.getCoarseGrainedMaxX() > bg.ScreenWidth
-				|| bg.ball.getCoarseGrainedMinX() < 0) {
-			bg.ball.bounce(90);
-			bounced = true;
-		} else if (bg.ball.getCoarseGrainedMaxY() > bg.ScreenHeight
-				|| bg.ball.getCoarseGrainedMinY() < 0) {
-			bg.ball.bounce(0);
-			bounced = true;
-		}
-		if (bounced) {
-			bg.explosions.add(new Bang(bg.ball.getX(), bg.ball.getY()));
-		}
-		bg.ball.update(delta);
+		GameObject obj;
+		boolean bounced;
+    for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
+      obj = e.next();
+      bounced = false;
+      if (obj.getCoarseGrainedMaxX() > bg.ScreenWidth){
+        obj.translate( -obj.getCoarseGrainedMaxX()+bg.ScreenWidth-.001f,0.0f);
+        obj.collide(90.0f);
+        bounced = true;
+      }else if(obj.getCoarseGrainedMinX() < 0) {
+        obj.translate(-obj.getCoarseGrainedMinX()+.001f, 0.0f);
+        obj.collide(90.0f);
+        bounced = true;
+      } else if (obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
+        obj.translate( 0.0f,-obj.getCoarseGrainedMaxY()+bg.ScreenHeight-.001f);
+        obj.collide(0);
+        bounced = true;
+      }else if(obj.getCoarseGrainedMinY() < 0) {
+        obj.translate(0.0f, -obj.getCoarseGrainedMinY()+.001f);
+        obj.collide(0);
+        bounced = true;
+      }
+      if (bounced) {
+        bg.explosions.add(new Bang(obj.getX(), obj.getY()));
+      }
+      obj.update(delta);
+    }
+
 
 		// check if there are any finished explosions, if so remove them
 		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {

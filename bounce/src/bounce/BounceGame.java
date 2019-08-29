@@ -2,6 +2,7 @@ package bounce;
 
 import java.util.ArrayList;
 
+import bounce.resource.GameObject;
 import jig.Entity;
 import jig.ResourceManager;
 
@@ -55,9 +56,9 @@ public class BounceGame extends StateBasedGame {
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
-
-	Ball ball;
-	ArrayList<Bang> explosions;
+  public ArrayList<GameObject> gameObjects;
+	public Ball ball;
+	public ArrayList<Bang> explosions;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -76,7 +77,7 @@ public class BounceGame extends StateBasedGame {
 
 		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
 		explosions = new ArrayList<Bang>(10);
-				
+		gameObjects = new ArrayList<GameObject>(50);
 	}
 
 
@@ -101,6 +102,7 @@ public class BounceGame extends StateBasedGame {
 		ResourceManager.loadImage(BANG_EXPLOSIONIMG_RSC);
 		
 		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);
+		gameObjects.add(ball);
 
 	}
 	
