@@ -56,16 +56,16 @@ class PlayingState extends BasicGameState {
 		BounceGame bg = (BounceGame)game;
 		
 		if (input.isKeyDown(Input.KEY_W)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, -.001f)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, -.10f)));
 		}
 		if (input.isKeyDown(Input.KEY_S)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.001f)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.10f)));
 		}
 		if (input.isKeyDown(Input.KEY_A)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(-.001f, 0)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(-.10f, 0)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(+.001f, 0f)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(+.10f, 0f)));
 		}
 		// bounce the ball...
     GameObject obj;
