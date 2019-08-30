@@ -10,10 +10,10 @@
 - **[8]** Use fully specified resource path, preload resources if possible
 - **[9]**   Collision detection sometimes allows the block to clip into a wall and it gets stuck constantly
             bouncing back and forth. Adjust logic.
+- **[10]**  Change the square to a circle.
 
 ## Open Issues ##
 
-- **[10]**  Change the square to a circle.
 - **[11]**  make a brick game Object.
 - **[12]**  make a paddle Object
 - **[13]**  (Optional) Make acceleration based physics for paddle and ball.
