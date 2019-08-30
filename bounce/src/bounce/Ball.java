@@ -1,6 +1,6 @@
 package bounce;
 
-import bounce.resource.GameObject;
+import bounce.GameObject;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -52,10 +52,6 @@ import jig.Vector;
   public void collide(float tangent){
     bounce(tangent);
   }
-  // TODO: Make this badboy.
-  public void collide(GameObject obj){
-
-  }
 
 	/**
 	 * Update the Ball based on how much time has passed...
@@ -69,7 +65,7 @@ import jig.Vector;
 		if (countdown > 0) {
 			countdown -= delta;
 			if (countdown <= 0) {
-				addImageWithBoundingBox(ResourceManager
+				addImage(ResourceManager
 						.getImage(BounceGame.BALL_BALLIMG_RSC));
 				removeImage(ResourceManager
 						.getImage(BounceGame.BALL_BROKENIMG_RSC));
