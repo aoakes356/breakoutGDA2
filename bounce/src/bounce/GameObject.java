@@ -5,6 +5,7 @@ package bounce;
 import jig.Entity;
 
 public class GameObject extends Entity {
+  public static final int GAMEOBJ_MOMENT = 3;
   public static final int GAMEOBJ_NONSTAT = 2;
   public static final int GAMEOBJ_STAT = 1;
   public static final int GAMEOBJ_UNDEF = 0;

@@ -1,6 +1,7 @@
 package bounce;
 
 import bounce.GameObject;
+import jig.ConvexPolygon;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -19,7 +20,8 @@ import jig.Vector;
 	public Ball(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
 		setType(GameObject.GAMEOBJ_NONSTAT);
-		addImageWithBoundingBox(ResourceManager
+		addShape(new ConvexPolygon(20,20));
+		addImage(ResourceManager
 				.getImage(BounceGame.BALL_BALLIMG_RSC));
 		velocity = new Vector(vx, vy);
 		countdown = 0;
@@ -63,9 +65,9 @@ import jig.Vector;
 	@Override
 	public void update(final int delta) {
 	  float speed = velocity.length();
-	  if(speed > 1){
-	    velocity = velocity.scale(1.0f/speed);
-    }
+	  /*if(speed > 2){
+	    velocity = velocity.scale(2.0f/speed);
+    }*/
 		translate(velocity.scale(delta));
 		if (countdown > 0) {
 			countdown -= delta;

@@ -1,5 +1,6 @@
 package bounce;
 
+import jig.ConvexPolygon;
 import jig.ResourceManager;
 import jig.Vector;
 
@@ -9,9 +10,10 @@ public class Paddle extends GameObject{
 
 	public Paddle(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
-		setType(GameObject.GAMEOBJ_STAT);
-		addImageWithBoundingBox(ResourceManager
-				.getImage(BounceGame.PADDLE_BASIC_RSC));
+		addShape(new ConvexPolygon(50,8));
+		setType(GameObject.GAMEOBJ_MOMENT);
+		addImage(ResourceManager
+        .getImage(BounceGame.PADDLE_BASIC_RSC));
 		velocity = new Vector(vx, 0.0f);
 	}
 
@@ -41,7 +43,7 @@ public class Paddle extends GameObject{
 
 	@Override
   public void collide(float tangent){
-    bounce(tangent);
+   // bounce(tangent);
   }
 
 	/**

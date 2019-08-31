@@ -90,10 +90,10 @@ class PlayingState extends BasicGameState {
         obj.collide(90.0f);
         bounced = true;
       }else if(obj.getCoarseGrainedMinX() < 0) {
-        obj.translate(-obj.getCoarseGrainedMinX()+.001f, 0.0f);
+        obj.translate(-obj.getCoarseGrainedMinX() + .001f, 0.0f);
         obj.collide(90.0f);
         bounced = true;
-      } else if (obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
+      }else if(obj.type != GameObject.GAMEOBJ_MOMENT && obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
         obj.translate( 0.0f,-obj.getCoarseGrainedMaxY()+bg.ScreenHeight-.001f);
         obj.collide(0);
         bounced = true;
@@ -108,6 +108,7 @@ class PlayingState extends BasicGameState {
       }
       float surfaceAngle;
       float ballVel; // Store the magnitude of the velocity of the current object.
+      Vector velocity;
       for(Iterator<GameObject> it = bg.gameObjects.iterator(); it.hasNext();) {
         obj2 = it.next();
         if(!obj2.equals(obj)) {
@@ -120,12 +121,19 @@ class PlayingState extends BasicGameState {
               obj.translate(-col.getMinPenetration().getX() * (1+ballVel)*8.0f, -col.getMinPenetration().getY() * (1+ballVel)*8.0f);
               bg.explosions.add(new Bang(obj.getX(),obj.getY()));
               bounces++;
+            }else if(obj.type == GameObject.GAMEOBJ_MOMENT){
+              velocity = ((Ball)obj2).getVelocity().scale(1.01f);
+              ((Ball)obj2).setVelocity(velocity);
             }
             if(obj2.type == GameObject.GAMEOBJ_NONSTAT) {
               ballVel = ((Ball)obj2).getVelocity().length();
               // Translate the object away from the collision more if its move quickly
               obj2.translate(col.getMinPenetration().getX() * (1+ballVel)*2.0f, col.getMinPenetration().getY() * (1+ballVel)*2.0f);
+            }else if(obj2.type == GameObject.GAMEOBJ_MOMENT){
+              velocity = ((Ball)obj).getVelocity().scale(1.01f);
+              ((Ball)obj).setVelocity(velocity);
             }
+
             obj2.collide(-surfaceAngle);
             obj.collide(surfaceAngle);
           }
