@@ -18,6 +18,10 @@
 ## Open Issues ##
 
 - **[14]**  Make levels out of the new entities.
-- **[15]**  Make a splash screen
+- **[15]**  Make the ball start on the paddle, click or space to launch ball.
+- **[16]**  Allow "Capturing" of the ball, in order to launch at the desired location.
+- **[17]**  Switch to simple flat paddle.
+- **[18]**  Make new kinds of bricks.
+- **[19]**  Make a splash screen
 
  
