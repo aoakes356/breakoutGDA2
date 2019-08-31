@@ -22,7 +22,7 @@ import jig.Vector;
 		setType(GameObject.GAMEOBJ_NONSTAT);
 		addShape(new ConvexPolygon(20,20));
 		addImage(ResourceManager
-				.getImage(BounceGame.BALL_BALLIMG_RSC));
+				.getImage(BounceGame.BALL_SMALLBALL_RSC));
 		velocity = new Vector(vx, vy);
 		countdown = 0;
 	}

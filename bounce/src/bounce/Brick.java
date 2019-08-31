@@ -5,13 +5,13 @@ import jig.ResourceManager;
 import jig.Vector;
 
 public class Brick extends GameObject {
-  private int lives = 100;
+  private int lives = 1;
   public boolean collided = false;
   public Brick(final float x, final float y) {
     super(x, y);
     setType(GameObject.GAMEOBJ_STAT);
     addImageWithBoundingBox(ResourceManager
-        .getImage(BounceGame.BRICK_BASIC_RSC));
+        .getImage(BounceGame.BRICK_SMALL_RSC));
   }
 
   @Override

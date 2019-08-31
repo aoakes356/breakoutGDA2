@@ -49,12 +49,14 @@ public class BounceGame extends StateBasedGame {
 	
 	public static final String BALL_BALLIMG_RSC = "bounce/resource/redBall.png";
 	public static final String BALL_BROKENIMG_RSC = "bounce/resource/redBall.png";
+	public static final String BALL_SMALLBALL_RSC = "bounce/resource/smallBall.png";
 	public static final String GAMEOVER_BANNER_RSC = "bounce/resource/GameOver.png";
 	public static final String STARTUP_BANNER_RSC = "bounce/resource/PressSpace.png";
 	public static final String BANG_EXPLOSIONIMG_RSC = "bounce/resource/explosion.png";
 	public static final String BANG_EXPLOSIONSND_RSC = "bounce/resource/explosion.wav";
   public static final String BRICK_BASIC_RSC = "bounce/resource/basicBrick.png";
   public static final String PADDLE_BASIC_RSC = "bounce/resource/basic_paddle.png";
+  public static final String BRICK_SMALL_RSC = "bounce/resource/smallBrick.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -105,6 +107,8 @@ public class BounceGame extends StateBasedGame {
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		ResourceManager.loadImage(BANG_EXPLOSIONIMG_RSC);
 		ResourceManager.loadImage(BRICK_BASIC_RSC);
+		ResourceManager.loadImage(BRICK_SMALL_RSC);
+		ResourceManager.loadImage(BALL_SMALLBALL_RSC);
     ResourceManager.loadImage(PADDLE_BASIC_RSC);
 
 		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);

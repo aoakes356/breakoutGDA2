@@ -85,7 +85,7 @@ class PlayingState extends BasicGameState {
     if(input.isKeyPressed(Input.MOUSE_LEFT_BUTTON) || input.isKeyPressed(Input.KEY_ENTER)){
       if(bg.paddle.hasBall) {
         dir = new Vector(-(bg.ball.getX()-input.getMouseX()),bg.ball.getY()-input.getMouseY()).unit();
-        bg.ball.setVelocity(dir.scale(1.0f));
+        bg.ball.setVelocity(dir.scale(.5f));
         bg.paddle.takeBall();
         bg.paddle.stick = false;
         bg.explosions.add(new Bang(bg.paddle.getX(),bg.paddle.getY()));
