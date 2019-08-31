@@ -2,7 +2,7 @@ package bounce;
 
 import java.util.Iterator;
 
-import bounce.resource.GameObject;
+import bounce.GameObject;
 import jig.ResourceManager;
 
 import org.newdawn.slick.GameContainer;

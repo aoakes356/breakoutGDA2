@@ -2,7 +2,7 @@ package bounce;
 
 import java.util.ArrayList;
 
-import bounce.resource.GameObject;
+import bounce.GameObject;
 import jig.Entity;
 import jig.ResourceManager;
 
@@ -53,11 +53,13 @@ public class BounceGame extends StateBasedGame {
 	public static final String STARTUP_BANNER_RSC = "bounce/resource/PressSpace.png";
 	public static final String BANG_EXPLOSIONIMG_RSC = "bounce/resource/explosion.png";
 	public static final String BANG_EXPLOSIONSND_RSC = "bounce/resource/explosion.wav";
+  public static final String BRICK_BASIC_RSC = "bounce/resource/basicBrick.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
   public ArrayList<GameObject> gameObjects;
 	public Ball ball;
+	public Brick brick;
 	public ArrayList<Bang> explosions;
 
 	/**
@@ -100,9 +102,12 @@ public class BounceGame extends StateBasedGame {
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		ResourceManager.loadImage(BANG_EXPLOSIONIMG_RSC);
+		ResourceManager.loadImage(BRICK_BASIC_RSC);
 		
 		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);
+		brick = new Brick(100,100);
 		gameObjects.add(ball);
+		gameObjects.add(brick);
 
 	}
 	

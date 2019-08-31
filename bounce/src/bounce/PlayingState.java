@@ -2,7 +2,8 @@ package bounce;
 
 import java.util.Iterator;
 
-import bounce.resource.GameObject;
+import bounce.GameObject;
+import jig.Collision;
 import jig.Entity;
 import jig.Vector;
 
@@ -12,6 +13,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.FastTrig;
 
 
 /**
@@ -41,8 +43,17 @@ class PlayingState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 		BounceGame bg = (BounceGame)game;
-		
-		bg.ball.render(g);
+		GameObject currentObj;
+	  for(Iterator<GameObject> it = bg.gameObjects.iterator(); it.hasNext();){
+	    currentObj = it.next();
+	    if(currentObj.active) {
+        currentObj.render(g);
+      }else{
+	      it.remove();
+      }
+
+    }
+		//bg.ball.render(g);
 		g.drawString("Bounces: " + bounces, 10, 30);
 		for (Bang b : bg.explosions)
 			b.render(g);
@@ -56,20 +67,21 @@ class PlayingState extends BasicGameState {
 		BounceGame bg = (BounceGame)game;
 		
 		if (input.isKeyDown(Input.KEY_W)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, -.10f)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, -.010f)));
 		}
 		if (input.isKeyDown(Input.KEY_S)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.10f)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.010f)));
 		}
 		if (input.isKeyDown(Input.KEY_A)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(-.10f, 0)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(-.010f, 0)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(+.10f, 0f)));
+			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(+.010f, 0f)));
 		}
 		// bounce the ball...
-    GameObject obj;
+    GameObject obj,obj2;
 		boolean bounced;
+    Collision col;
     for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
       obj = e.next();
       bounced = false;
@@ -91,9 +103,29 @@ class PlayingState extends BasicGameState {
         bounced = true;
       }
       if (bounced) {
-        bg.explosions.add(new Bang(obj.getX(), obj.getY()));
+        //bg.explosions.add(new Bang(obj.getX(), obj.getY()));
         bounces++;
       }
+      float surfaceAngle;
+      float bLength;
+      for(Iterator<GameObject> it = bg.gameObjects.iterator(); it.hasNext();) {
+        obj2 = it.next();
+        if(!obj2.equals(obj)) {
+          col = obj2.collides(obj);
+          if (col != null){
+            surfaceAngle = (float) Math.toDegrees(Math.atan2(col.getMinPenetration().getY(), col.getMinPenetration().getX()) + Math.PI / 2.0f);
+            obj.collide(surfaceAngle);
+            if(obj.type == GameObject.GAMEOBJ_NONSTAT) {
+              bLength = ((Ball)obj).getVelocity().length();
+              // Translate the object away from the collision more if its move quickly
+              obj.translate(-col.getMinPenetration().getX() * bLength*10.0f, -col.getMinPenetration().getY() * bLength*10.0f);
+              bg.explosions.add(new Bang(obj.getX(),obj.getY()));
+              bounces++;
+            }
+          }
+        }
+      }
+
       obj.update(delta);
     }
 		// check if there are any finished explosions, if so remove them
