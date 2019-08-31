@@ -15,12 +15,12 @@
 - **[12]**  make a paddle Object
 - **[13]**  (Optional) Make acceleration based physics for paddle and ball.
 - **[17]**  Switch to simple flat paddle.
+- **[15]**  Make the ball start on the paddle, click or space to launch ball.
+- **[16]**  Allow "Capturing" of the ball, in order to launch at the desired location.
 
 ## Open Issues ##
 
 - **[14]**  Make levels out of the new entities.
-- **[15]**  Make the ball start on the paddle, click or space to launch ball.
-- **[16]**  Allow "Capturing" of the ball, in order to launch at the desired location.
 - **[18]**  Make new kinds of bricks.
 - **[19]**  Make a splash screen
 
