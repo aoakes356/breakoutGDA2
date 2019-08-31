@@ -17,13 +17,13 @@
 - **[17]**  Switch to simple flat paddle.
 - **[15]**  Make the ball start on the paddle, click or space to launch ball.
 - **[16]**  Allow "Capturing" of the ball, in order to launch at the desired location.
+- **[20]**  Make bricks and the ball a bit smaller.
 
 ## Open Issues ##
 
 - **[14]**  Make levels out of the new entities.
 - **[18]**  Make new kinds of bricks.
 - **[19]**  Make a splash screen
-- **[20]**  Make bricks and the ball a bit smaller.
 
 
  
