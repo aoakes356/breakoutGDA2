@@ -54,12 +54,14 @@ public class BounceGame extends StateBasedGame {
 	public static final String BANG_EXPLOSIONIMG_RSC = "bounce/resource/explosion.png";
 	public static final String BANG_EXPLOSIONSND_RSC = "bounce/resource/explosion.wav";
   public static final String BRICK_BASIC_RSC = "bounce/resource/basicBrick.png";
+  public static final String PADDLE_BASIC_RSC = "bounce/resource/basic_paddle.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
   public ArrayList<GameObject> gameObjects;
 	public Ball ball;
 	public Brick brick;
+	public Paddle paddle;
 	public ArrayList<Bang> explosions;
 
 	/**
@@ -103,10 +105,13 @@ public class BounceGame extends StateBasedGame {
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		ResourceManager.loadImage(BANG_EXPLOSIONIMG_RSC);
 		ResourceManager.loadImage(BRICK_BASIC_RSC);
-		
+    ResourceManager.loadImage(PADDLE_BASIC_RSC);
+
 		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);
 		brick = new Brick(100,100);
+		paddle = new Paddle(ScreenWidth/2.0f,ScreenHeight-100,0.0f,0.0f);
 		gameObjects.add(ball);
+		gameObjects.add(paddle);
 		gameObjects.add(brick);
 
 	}

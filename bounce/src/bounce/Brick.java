@@ -5,7 +5,7 @@ import jig.ResourceManager;
 import jig.Vector;
 
 public class Brick extends GameObject {
-  private int lives = 1;
+  private int lives = 100;
   public boolean collided = false;
   public Brick(final float x, final float y) {
     super(x, y);
