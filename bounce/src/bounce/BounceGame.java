@@ -54,7 +54,7 @@ public class BounceGame extends StateBasedGame {
 	public static final String BANG_EXPLOSIONIMG_RSC = "bounce/resource/explosion.png";
 	public static final String BANG_EXPLOSIONSND_RSC = "bounce/resource/explosion.wav";
   public static final String BRICK_BASIC_RSC = "bounce/resource/basicBrick.png";
-  public static final String PADDLE_BASIC_RSC = "bounce/resource/octPaddle.png";
+  public static final String PADDLE_BASIC_RSC = "bounce/resource/basic_paddle.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;

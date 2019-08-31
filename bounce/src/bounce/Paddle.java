@@ -10,9 +10,9 @@ public class Paddle extends GameObject{
 
 	public Paddle(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
-		addShape(new ConvexPolygon(50,8));
-		setType(GameObject.GAMEOBJ_MOMENT);
-		addImage(ResourceManager
+		//addShape(new ConvexPolygon(50,8));
+		//setType(GameObject.GAMEOBJ_MOMENT);
+		addImageWithBoundingBox(ResourceManager
         .getImage(BounceGame.PADDLE_BASIC_RSC));
 		velocity = new Vector(vx, 0.0f);
 	}
