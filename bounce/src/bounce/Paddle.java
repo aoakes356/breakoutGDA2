@@ -7,11 +7,14 @@ import jig.Vector;
 public class Paddle extends GameObject{
   private Vector velocity;
 	private int countdown;
+	public boolean hasBall = false;
+	public boolean stick = false;
+	private Ball ball;
 
 	public Paddle(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
 		//addShape(new ConvexPolygon(50,8));
-		//setType(GameObject.GAMEOBJ_MOMENT);
+		setType(GameObject.GAMEOBJ_MOMENT);
 		addImageWithBoundingBox(ResourceManager
         .getImage(BounceGame.PADDLE_BASIC_RSC));
 		velocity = new Vector(vx, 0.0f);
@@ -37,13 +40,23 @@ public class Paddle extends GameObject{
 		//removeImage(ResourceManager.getImage(BounceGame.BALL_BALLIMG_RSC));
 		//addImageWithBoundingBox(ResourceManager
 		//		.getImage(BounceGame.BALL_BROKENIMG_RSC));
-		countdown = 500;
-		velocity = velocity.bounce(surfaceTangent);
+		velocity.setX(0);
 	}
 
 	@Override
   public void collide(float tangent){
-   // bounce(tangent);
+	  bounce(tangent);
+  }
+
+  public void giveBall(Ball b){
+	  hasBall = true;
+	  ball = b;
+	  b.setY(getY()-(b.getCoarseGrainedHeight()));
+	  b.setX(getX());
+	  b.setVelocity(new Vector(0.0f,0.0f));
+  }
+  public void takeBall(){
+	  hasBall = false;
   }
 
 	/**
@@ -55,16 +68,11 @@ public class Paddle extends GameObject{
 	@Override
 	public void update(final int delta) {
 	  velocity = velocity.scale(.95f);
+	  velocity.setY(0);
 		translate(velocity.scale(delta));
-		if (countdown > 0) {
-			countdown -= delta;
-			if (countdown <= 0) {
-				addImage(ResourceManager
-						.getImage(BounceGame.BALL_BALLIMG_RSC));
-				removeImage(ResourceManager
-						.getImage(BounceGame.BALL_BROKENIMG_RSC));
-			}
-		}
+		if(hasBall){
+		  ball.translate(velocity.scale(delta));
+    }
 	}
 
 }
