@@ -73,10 +73,10 @@ class PlayingState extends BasicGameState {
 			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.010f)));
 		}*/
 		if (input.isKeyDown(Input.KEY_A)) {
-			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(-.030f, 0)));
+			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(-.040f, 0)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(+.030f, 0f)));
+			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(+.040f, 0f)));
 		}
 		// bounce the ball...
     GameObject obj,obj2;
@@ -128,7 +128,7 @@ class PlayingState extends BasicGameState {
             if(obj2.type == GameObject.GAMEOBJ_NONSTAT) {
               ballVel = ((Ball)obj2).getVelocity().length();
               // Translate the object away from the collision more if its move quickly
-              obj2.translate(col.getMinPenetration().getX() * (1+ballVel)*2.0f, col.getMinPenetration().getY() * (1+ballVel)*2.0f);
+              obj2.translate(col.getMinPenetration().getX() * (1+ballVel)*8.0f, col.getMinPenetration().getY() * (1+ballVel)*8.0f);
             }else if(obj2.type == GameObject.GAMEOBJ_MOMENT){
               velocity = ((Ball)obj).getVelocity().scale(1.01f);
               ((Ball)obj).setVelocity(velocity);

@@ -65,9 +65,9 @@ import jig.Vector;
 	@Override
 	public void update(final int delta) {
 	  float speed = velocity.length();
-	  /*if(speed > 2){
+	  if(speed > 2){
 	    velocity = velocity.scale(2.0f/speed);
-    }*/
+    }
 		translate(velocity.scale(delta));
 		if (countdown > 0) {
 			countdown -= delta;
