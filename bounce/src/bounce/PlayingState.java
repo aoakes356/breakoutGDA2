@@ -107,26 +107,31 @@ class PlayingState extends BasicGameState {
         bounces++;
       }
       float surfaceAngle;
-      float bLength;
+      float ballVel; // Store the magnitude of the velocity of the current object.
       for(Iterator<GameObject> it = bg.gameObjects.iterator(); it.hasNext();) {
         obj2 = it.next();
         if(!obj2.equals(obj)) {
           col = obj2.collides(obj);
           if (col != null){
             surfaceAngle = (float) Math.toDegrees(Math.atan2(col.getMinPenetration().getY(), col.getMinPenetration().getX()) + Math.PI / 2.0f);
-            obj.collide(surfaceAngle);
             if(obj.type == GameObject.GAMEOBJ_NONSTAT) {
-              bLength = ((Ball)obj).getVelocity().length();
+              ballVel = ((Ball)obj).getVelocity().length();
               // Translate the object away from the collision more if its move quickly
-              obj.translate(-col.getMinPenetration().getX() * bLength*10.0f, -col.getMinPenetration().getY() * bLength*10.0f);
+              obj.translate(-col.getMinPenetration().getX() * ballVel*10.0f, -col.getMinPenetration().getY() * ballVel*10.0f);
               bg.explosions.add(new Bang(obj.getX(),obj.getY()));
               bounces++;
             }
+            if(obj2.type == GameObject.GAMEOBJ_NONSTAT) {
+              ballVel = ((Ball)obj2).getVelocity().length();
+              // Translate the object away from the collision more if its move quickly
+              obj2.translate(col.getMinPenetration().getX() * ballVel*10.0f, col.getMinPenetration().getY() * ballVel*10.0f);
+            }
+            obj2.collide(-surfaceAngle);
+            obj.collide(surfaceAngle);
           }
         }
       }
 
-      obj.update(delta);
     }
 		// check if there are any finished explosions, if so remove them
 		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
@@ -134,6 +139,14 @@ class PlayingState extends BasicGameState {
 				i.remove();
 			}
 		}
+		// Remove innactive objects.
+    for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
+      obj = e.next();
+      obj.update(delta);
+      if (!obj.active) {
+        e.remove();
+      }
+    }
 
 		if (bounces >= 10000) {
 			((GameOverState)game.getState(BounceGame.GAMEOVERSTATE)).setUserScore(bounces);

@@ -14,9 +14,16 @@ public class Brick extends GameObject {
         .getImage(BounceGame.BRICK_BASIC_RSC));
   }
 
+  @Override
+  public void collide(float tangent) {
+    collided = true;
+    System.out.println("Collided with le box.");
+  }
+
   public void update(final int delta) {
     if(collided){
       lives--;
+      collided = false;
     }
     if(lives <= 0){
       active = false;
