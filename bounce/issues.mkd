@@ -20,11 +20,11 @@
 - **[20]**  Make bricks and the ball a bit smaller.
 - **[14]**  Make levels out of the new entities.
 - **[18]**  Make new kinds of bricks.
+- **[21]**  Make a round won state.
 
 ## Open Issues ##
 
 - **[19]**  Make a splash screen
-- **[21]**  Make a round won state.
 - **[22]**  Make a game won state that displays the splash screen.
 - **[23]**  Display the number of lives left.
 - **[24]**  Upon round reset, not all the blocks are coming back.
