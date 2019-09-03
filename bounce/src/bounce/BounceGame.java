@@ -49,6 +49,8 @@ public class BounceGame extends StateBasedGame {
 	public static final int STARTUPSTATE = 0;
 	public static final int PLAYINGSTATE = 1;
 	public static final int GAMEOVERSTATE = 2;
+	public static final int GAMEWONSTATE = 3;
+	public static final int ROUNDWONSTATE = 4;
 	
 	public static final String BALL_BALLIMG_RSC = "bounce/resource/redBall.png";
 	public static final String BALL_BROKENIMG_RSC = "bounce/resource/redBall.png";
@@ -62,6 +64,7 @@ public class BounceGame extends StateBasedGame {
   public static final String BRICK_SMALL_RSC = "bounce/resource/smallBrick.png";
   public static final String BRICK_SMALL2_RSC = "bounce/resource/smallBrick2.png";
   public static final String BRICK_SMALL3_RSC = "bounce/resource/smallBrick3.png";
+  public static final String ROUND_OVER_BANNER = "bounce/resource/RoundOver.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -100,6 +103,7 @@ public class BounceGame extends StateBasedGame {
 		addState(new StartUpState());
 		addState(new GameOverState());
 		addState(new PlayingState());
+		addState(new RoundWonState());
 		
 		// the sound resource takes a particularly long time to load,
 		// we preload it here to (1) reduce latency when we first play it
@@ -120,6 +124,7 @@ public class BounceGame extends StateBasedGame {
     ResourceManager.loadImage(PADDLE_BASIC_RSC);
     ResourceManager.loadImage(BRICK_SMALL2_RSC);
     ResourceManager.loadImage(BRICK_SMALL3_RSC);
+    ResourceManager.loadImage(ROUND_OVER_BANNER);
     levels = new ArrayList<>();
     BrickStack b1 = new BrickStack();
     BrickStack b2 = new BrickStack();
@@ -151,8 +156,9 @@ public class BounceGame extends StateBasedGame {
         gameObjects.addAll(currentLevel.bricks);
       }else{
         Brick temp = null;
-        for(Iterator<Brick> it = currentLevel.bricks.iterator(); it.hasNext(); temp = it.next()){
-          if(!gameObjects.contains(temp)){
+        for(Iterator<Brick> it = currentLevel.bricks.iterator(); it.hasNext();){
+          temp = it.next();
+          if(temp != null && !gameObjects.contains(temp)){
             gameObjects.add(temp);
           }
         }

@@ -91,6 +91,7 @@ public class Brick extends GameObject {
   public void resetLives(){
     lives= startingLives;
     setImage();
+    active = true;
   }
 
   public void setLives(int lives){

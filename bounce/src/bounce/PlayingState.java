@@ -10,6 +10,8 @@ import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
+import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.util.FastTrig;
 
 
@@ -26,6 +28,7 @@ import org.newdawn.slick.util.FastTrig;
 class PlayingState extends BasicGameState {
 	int bounces;
 	Vector dir;
+	private boolean isChanged;
 	public int lives = 3;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -51,6 +54,7 @@ class PlayingState extends BasicGameState {
 	    if(currentObj.active) {
         currentObj.render(g);
       }else{
+	      isChanged = true;
 	      it.remove();
       }
 
@@ -210,8 +214,14 @@ class PlayingState extends BasicGameState {
       obj = e.next();
       if (obj == null || !obj.active) {
         e.remove();
+        isChanged = true;
       }else {
         obj.update(delta);
+      }
+    }
+    if(isChanged){
+      if(bg.currentLevel.isWon()) {
+        game.enterState(BounceGame.ROUNDWONSTATE, new EmptyTransition(), new HorizontalSplitTransition());
       }
     }
 
