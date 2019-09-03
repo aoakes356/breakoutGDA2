@@ -65,6 +65,7 @@ public class BounceGame extends StateBasedGame {
   public static final String BRICK_SMALL2_RSC = "bounce/resource/smallBrick2.png";
   public static final String BRICK_SMALL3_RSC = "bounce/resource/smallBrick3.png";
   public static final String ROUND_OVER_BANNER = "bounce/resource/RoundOver.png";
+  public static final String GAME_WON_BANNER = "bounce/resource/GameWon.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -104,6 +105,7 @@ public class BounceGame extends StateBasedGame {
 		addState(new GameOverState());
 		addState(new PlayingState());
 		addState(new RoundWonState());
+		addState(new GameWonState());
 		
 		// the sound resource takes a particularly long time to load,
 		// we preload it here to (1) reduce latency when we first play it

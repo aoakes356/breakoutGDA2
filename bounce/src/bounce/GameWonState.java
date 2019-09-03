@@ -1,5 +1,6 @@
 package bounce;
 
+import jig.ResourceManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -20,6 +21,11 @@ public class GameWonState extends BasicGameState {
 
   @Override
   public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+    BounceGame bg = (BounceGame)game;
+    for (Bang b : bg.explosions)
+      b.render(g);
+    g.drawImage(ResourceManager.getImage(BounceGame.GAME_WON_BANNER), 225,
+        270);
 
   }
 
