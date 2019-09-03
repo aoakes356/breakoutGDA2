@@ -221,7 +221,11 @@ class PlayingState extends BasicGameState {
     }
     if(isChanged){
       if(bg.currentLevel.isWon()) {
-        game.enterState(BounceGame.ROUNDWONSTATE, new EmptyTransition(), new HorizontalSplitTransition());
+        if(bg.levelSelector.hasNext()) {
+          game.enterState(BounceGame.ROUNDWONSTATE, new EmptyTransition(), new HorizontalSplitTransition());
+        }else{
+          game.enterState(BounceGame.GAMEWONSTATE, new EmptyTransition(), new HorizontalSplitTransition());
+        }
       }
     }
 
