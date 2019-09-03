@@ -7,10 +7,7 @@ import jig.Collision;
 import jig.Entity;
 import jig.Vector;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.FastTrig;
@@ -29,7 +26,7 @@ import org.newdawn.slick.util.FastTrig;
 class PlayingState extends BasicGameState {
 	int bounces;
 	Vector dir;
-	int lives = 3;
+	public int lives = 3;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -42,6 +39,7 @@ class PlayingState extends BasicGameState {
 		container.setSoundOn(true);
     BounceGame bg = ((BounceGame)game);
     bg.paddle.giveBall(bg.ball);
+    bg.nextLevel();
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game,
@@ -84,7 +82,7 @@ class PlayingState extends BasicGameState {
 		}
     if(input.isKeyPressed(Input.MOUSE_LEFT_BUTTON) || input.isKeyPressed(Input.KEY_ENTER)){
       if(bg.paddle.hasBall) {
-        dir = new Vector(-(bg.ball.getX()-input.getMouseX()),bg.ball.getY()-input.getMouseY()).unit();
+        dir = new Vector(-(bg.ball.getX()-input.getMouseX()),-bg.ball.getY()+input.getMouseY()).unit();
         bg.ball.setVelocity(dir.scale(.5f));
         bg.paddle.takeBall();
         bg.paddle.stick = false;
@@ -96,22 +94,45 @@ class PlayingState extends BasicGameState {
       }
 
     }
+    if(input.isKeyPressed(Input.KEY_TAB)){
+      Brick temp;
+      for(Iterator<Brick> it = bg.currentLevel.bricks.iterator();it.hasNext();){
+        temp = it.next();
+        if(temp != null){
+          temp.active = false;
+        }
+      }
+      GameObject obj;
+      for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
+        obj = e.next();
+        if (obj == null || !obj.active) {
+          e.remove();
+        }else {
+          obj.update(delta);
+        }
+    }
+
+      bg.nextLevel();
+    }
 		// bounce the ball...
     GameObject obj,obj2;
 		boolean bounced;
     Collision col;
     for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
       obj = e.next();
+      if(obj == null) {continue;}
       bounced = false;
       if (obj.getCoarseGrainedMaxX() > bg.ScreenWidth){
         obj.translate( -obj.getCoarseGrainedMaxX()+bg.ScreenWidth-.001f,0.0f);
-        obj.collide(90.0f);
+        if(obj.type != GameObject.GAMEOBJ_STAT) {
+          obj.collide(90.0f);
+        }
         bounced = true;
       }else if(obj.getCoarseGrainedMinX() < 0) {
         obj.translate(-obj.getCoarseGrainedMinX() + .001f, 0.0f);
         obj.collide(90.0f);
         bounced = true;
-      }else if(obj.type != GameObject.GAMEOBJ_MOMENT && obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
+      }else if(obj.type == GameObject.GAMEOBJ_NONSTAT && obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
         if(lives-- <= 0) {
           ((GameOverState) game.getState(BounceGame.GAMEOVERSTATE)).setUserScore(bounces);
           game.enterState(BounceGame.GAMEOVERSTATE);
@@ -120,7 +141,9 @@ class PlayingState extends BasicGameState {
         bounced = true;
       }else if(obj.getCoarseGrainedMinY() < 0) {
         obj.translate(0.0f, -obj.getCoarseGrainedMinY()+.001f);
-        obj.collide(0);
+        if(obj.type != GameObject.GAMEOBJ_STAT) {
+          obj.collide(0);
+        }
         bounced = true;
       }
       /*if (bounced) {
@@ -128,19 +151,21 @@ class PlayingState extends BasicGameState {
         bounces++;
       }*/
       float surfaceAngle;
-      float ballVel; // Store the magnitude of the velocity of the current object.
       Vector velocity;
       Paddle p;
+      /**
+       * Check for collisions between game objects.
+       **/
       for(Iterator<GameObject> it = bg.gameObjects.iterator(); it.hasNext();) {
         obj2 = it.next();
+        if(obj2 == null) {continue;}
         if(!obj2.equals(obj)) {
           col = obj2.collides(obj);
           if (col != null){
             surfaceAngle = (float) Math.toDegrees(Math.atan2(col.getMinPenetration().getY(), col.getMinPenetration().getX()) + Math.PI / 2.0f);
             if(obj.type == GameObject.GAMEOBJ_NONSTAT) {
-              ballVel = ((Ball)obj).getVelocity().length();
-              // Translate the object away from the collision more if its move quickly
-              obj.translate(-col.getMinPenetration().getX() * (1+ballVel)*8.0f, -col.getMinPenetration().getY() * (1+ballVel)*8.0f);
+              // Translate the object away from the collision more if it's moving quickly
+              obj.translate(-col.getMinPenetration().getX() * (1+Math.abs(((Ball)obj).getVelocity().getX()))*4.0f, -col.getMinPenetration().getY() * (1+Math.abs(((Ball)obj).getVelocity().getY()))*4.0f);
             }else if(obj.type == GameObject.GAMEOBJ_MOMENT){
               p = (Paddle)obj;
               if(!p.stick) {
@@ -154,25 +179,21 @@ class PlayingState extends BasicGameState {
 
             }
             if(obj2.type == GameObject.GAMEOBJ_NONSTAT) {
-              ballVel = ((Ball)obj2).getVelocity().length();
-              // Translate the object away from the collision more if its move quickly
-              obj2.translate(col.getMinPenetration().getX() * (1+ballVel)*8.0f, col.getMinPenetration().getY() * (1+ballVel)*8.0f);
+              // Translate the object away from the collision more if it's moving quickly
+              obj2.translate(col.getMinPenetration().getX() * (1+Math.abs(((Ball)obj2).getVelocity().getX()))*4.0f, col.getMinPenetration().getY() * (1+Math.abs(((Ball)obj2).getVelocity().getY()))*4.0f);
             }else if(obj2.type == GameObject.GAMEOBJ_MOMENT){
               p = (Paddle)obj2;
-              if(!p.stick) {
-                bounces++;
-                velocity = ((Ball) obj).getVelocity().scale(1.01f);
-                ((Ball) obj).setVelocity(velocity);
-              }else{
-                System.out.println("Giving the ball to the paddle!");
-                if(bounces%10 == 0) {
-                  p.giveBall((Ball) obj);
-                }
+              bounces++;
+              velocity = ((Ball) obj).getVelocity().scale(1.01f);
+              ((Ball) obj).setVelocity(velocity);
+              if(bounces%10 == 0) {
+                p.giveBall((Ball) obj);
               }
             }
-
-            obj2.collide(-surfaceAngle);
-            obj.collide(surfaceAngle);
+            if(obj.type != GameObject.GAMEOBJ_STAT || obj2.type != GameObject.GAMEOBJ_STAT) {
+              obj2.collide(-surfaceAngle);
+              obj.collide(surfaceAngle);
+            }
           }
         }
       }
@@ -187,9 +208,10 @@ class PlayingState extends BasicGameState {
 		// Remove innactive objects.
     for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
       obj = e.next();
-      obj.update(delta);
-      if (!obj.active) {
+      if (obj == null || !obj.active) {
         e.remove();
+      }else {
+        obj.update(delta);
       }
     }
 

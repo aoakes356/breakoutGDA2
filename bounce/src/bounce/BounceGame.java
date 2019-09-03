@@ -1,11 +1,14 @@
 package bounce;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import bounce.GameObject;
 import jig.Entity;
 import jig.ResourceManager;
 
+import jig.Vector;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -57,14 +60,18 @@ public class BounceGame extends StateBasedGame {
   public static final String BRICK_BASIC_RSC = "bounce/resource/basicBrick.png";
   public static final String PADDLE_BASIC_RSC = "bounce/resource/basic_paddle.png";
   public static final String BRICK_SMALL_RSC = "bounce/resource/smallBrick.png";
+  public static final String BRICK_SMALL2_RSC = "bounce/resource/smallBrick2.png";
+  public static final String BRICK_SMALL3_RSC = "bounce/resource/smallBrick3.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
   public ArrayList<GameObject> gameObjects;
+  public ArrayList<BrickStack> levels;
 	public Ball ball;
-	public Brick brick;
+	public BrickStack currentLevel;
 	public Paddle paddle;
 	public ArrayList<Bang> explosions;
+	public Iterator<BrickStack> levelSelector;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -84,6 +91,7 @@ public class BounceGame extends StateBasedGame {
 		Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
 		explosions = new ArrayList<Bang>(10);
 		gameObjects = new ArrayList<GameObject>(50);
+    currentLevel = null;
 	}
 
 
@@ -98,7 +106,7 @@ public class BounceGame extends StateBasedGame {
 		// and (2) because loading it will load the audio libraries and
 		// unless that is done now, we can't *disable* sound as we
 		// attempt to do in the startUp() method.
-		ResourceManager.loadSound(BANG_EXPLOSIONSND_RSC);	
+		ResourceManager.loadSound(BANG_EXPLOSIONSND_RSC);
 
 		// preload all the resources to avoid warnings & minimize latency...
 		ResourceManager.loadImage(BALL_BALLIMG_RSC);
@@ -110,15 +118,49 @@ public class BounceGame extends StateBasedGame {
 		ResourceManager.loadImage(BRICK_SMALL_RSC);
 		ResourceManager.loadImage(BALL_SMALLBALL_RSC);
     ResourceManager.loadImage(PADDLE_BASIC_RSC);
+    ResourceManager.loadImage(BRICK_SMALL2_RSC);
+    ResourceManager.loadImage(BRICK_SMALL3_RSC);
+    levels = new ArrayList<>();
+    BrickStack b1 = new BrickStack();
+    BrickStack b2 = new BrickStack();
+    BrickStack b3 = new BrickStack();
+    levels.add(b1);
+    levels.add(b2);
+    levels.add(b3);
+    for(int i = 0; i < 19; i++) {
+      b1.addBrick(new Vector((ScreenWidth / 20.0f) * i + ScreenWidth / 20.0f, 150.0f), 1);
+      b2.addBrick(new Vector((ScreenWidth / 20.0f) * i + ScreenWidth / 20.0f, (ScreenHeight/30)*i), 2);
+      b3.addBrick(new Vector(i*40.0f+40.0f, 150.0f+(float)(Math.sin(i*(Math.PI/10.0f))*100.0f)), 2);
 
-		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);
-		brick = new Brick(100,100);
+    }
+    levelSelector = levels.iterator();
+		ball = new Ball(ScreenWidth, ScreenHeight, 0.0f, 0.0f);
 		paddle = new Paddle(ScreenWidth/2.0f,ScreenHeight,0.0f,0.0f);
 		gameObjects.add(ball);
 		gameObjects.add(paddle);
-		gameObjects.add(brick);
 
 	}
+
+	public void nextLevel(){
+    if(currentLevel == null){
+      currentLevel = levelSelector.next();
+      gameObjects.addAll(currentLevel.bricks);
+    }else{
+      if(currentLevel.isWon()){
+        currentLevel = levelSelector.next();
+        gameObjects.addAll(currentLevel.bricks);
+      }else{
+        Brick temp = null;
+        for(Iterator<Brick> it = currentLevel.bricks.iterator(); it.hasNext(); temp = it.next()){
+          if(!gameObjects.contains(temp)){
+            gameObjects.add(temp);
+          }
+        }
+        currentLevel.reset();
+
+      }
+    }
+  }
 	
 	public static void main(String[] args) {
 		AppGameContainer app;
