@@ -76,6 +76,7 @@ public class BounceGame extends StateBasedGame {
 	public Paddle paddle;
 	public ArrayList<Bang> explosions;
 	public Iterator<BrickStack> levelSelector;
+  public int score;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -96,6 +97,7 @@ public class BounceGame extends StateBasedGame {
 		explosions = new ArrayList<Bang>(10);
 		gameObjects = new ArrayList<GameObject>(50);
     currentLevel = null;
+    score = 0;
 	}
 
 
@@ -127,6 +129,8 @@ public class BounceGame extends StateBasedGame {
     ResourceManager.loadImage(BRICK_SMALL2_RSC);
     ResourceManager.loadImage(BRICK_SMALL3_RSC);
     ResourceManager.loadImage(ROUND_OVER_BANNER);
+    ResourceManager.loadImage(GAME_WON_BANNER);
+
     levels = new ArrayList<>();
     BrickStack b1 = new BrickStack();
     BrickStack b2 = new BrickStack();

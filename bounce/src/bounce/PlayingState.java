@@ -27,6 +27,7 @@ import org.newdawn.slick.util.FastTrig;
  */
 class PlayingState extends BasicGameState {
 	int bounces;
+	int scoreDelta;
 	Vector dir;
 	private boolean isChanged;
 	public int lives = 3;
@@ -38,6 +39,7 @@ class PlayingState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		bounces = 0;
+		scoreDelta = 0;
 		lives = 3;
 		container.setSoundOn(true);
     BounceGame bg = ((BounceGame)game);
@@ -55,12 +57,18 @@ class PlayingState extends BasicGameState {
         currentObj.render(g);
       }else{
 	      isChanged = true;
+	      if(currentObj.type == GameObject.GAMEOBJ_STAT) {
+	        System.out.println("Adding to the score!");
+          bg.score += ((Brick) currentObj).getStartingLives();
+          scoreDelta += ((Brick) currentObj).getStartingLives();
+        }
 	      it.remove();
       }
 
     }
 		//bg.ball.render(g);
-		g.drawString("Bounces: " + bounces, 10, 30);
+		g.drawString("LIVES " + lives, 10, 30);
+    g.drawString("SCORE " + bg.score, ((BounceGame) game).ScreenWidth-100,30 );
 		for (Bang b : bg.explosions)
 			b.render(g);
 	}
@@ -138,6 +146,7 @@ class PlayingState extends BasicGameState {
         bounced = true;
       }else if(obj.type == GameObject.GAMEOBJ_NONSTAT && obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
         if(lives-- <= 0) {
+          bg.score -= scoreDelta;
           ((GameOverState) game.getState(BounceGame.GAMEOVERSTATE)).setUserScore(bounces);
           game.enterState(BounceGame.GAMEOVERSTATE);
         }
@@ -213,6 +222,9 @@ class PlayingState extends BasicGameState {
     for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
       obj = e.next();
       if (obj == null || !obj.active) {
+        System.out.println("Adding to the score!");
+        scoreDelta += ((Brick)obj).getStartingLives();
+        bg.score += ((Brick)obj).getStartingLives();
         e.remove();
         isChanged = true;
       }else {

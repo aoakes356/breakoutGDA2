@@ -98,4 +98,11 @@ public class Brick extends GameObject {
     this.lives = lives;
     this.startingLives = lives;
   }
+
+  public int getLives(){
+    return lives;
+  }
+  public int getStartingLives(){
+    return startingLives;
+  }
 }
