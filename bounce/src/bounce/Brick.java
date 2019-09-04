@@ -41,6 +41,7 @@ public class Brick extends GameObject {
     }
     this.lives = lives;
     this.startingLives = lives;
+    type = GameObject.GAMEOBJ_STAT;
   }
 
   @Override

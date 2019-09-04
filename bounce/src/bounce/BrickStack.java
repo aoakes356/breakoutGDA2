@@ -69,4 +69,16 @@ public class BrickStack {
   public ArrayList<Brick> getBricks(){
     return bricks;
   }
+
+
+  /** Made this so you can't get a good score if used, useful for testing though. **/
+  public void nukeBricks(){
+    Brick temp;
+    for(Iterator<Brick> it = bricks.iterator(); it.hasNext(); ) {
+      temp = it.next();
+      temp.active = false;
+    }
+  }
+
 }
+

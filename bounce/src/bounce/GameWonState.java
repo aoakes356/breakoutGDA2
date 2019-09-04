@@ -26,6 +26,7 @@ public class GameWonState extends BasicGameState {
       b.render(g);
     g.drawImage(ResourceManager.getImage(BounceGame.GAME_WON_BANNER), 225,
         270);
+    g.drawString("SCORE " + bg.score, ((BounceGame) game).ScreenWidth/2.0f-40,bg.ScreenHeight/2.0f+75 );
 
   }
 

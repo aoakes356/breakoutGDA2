@@ -56,6 +56,7 @@ class PlayingState extends BasicGameState {
 	    if(currentObj.active) {
         currentObj.render(g);
       }else{
+	      System.out.println("Deleting le brick.");
 	      isChanged = true;
 	      if(currentObj.type == GameObject.GAMEOBJ_STAT) {
 	        System.out.println("Adding to the score!");
@@ -86,6 +87,10 @@ class PlayingState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_S)) {
 			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.010f)));
 		}*/
+		if(input.isKeyPressed(Input.KEY_F)){
+		  /** Press F to pay respects. **/
+      bg.currentLevel.nukeBricks();
+    }
 		if (input.isKeyDown(Input.KEY_A)) {
 			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(-.040f, 0)));
 		}
