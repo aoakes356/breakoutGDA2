@@ -1,10 +1,7 @@
 package bounce;
 
 import bounce.GameObject;
-import jig.ConvexPolygon;
-import jig.Entity;
-import jig.ResourceManager;
-import jig.Vector;
+import jig.*;
 
 /**
  * The Ball class is an Entity that has a velocity (since it's moving). When
@@ -35,6 +32,14 @@ import jig.Vector;
 		return velocity;
 	}
 
+  public static Vector clipEnforce(GameObject nonStatic, GameObject isStatic){
+    Vector vel = ((Ball)nonStatic).getVelocity();
+    Vector unitVel = vel.unit();
+    nonStatic.translate(unitVel.scale(-nonStatic.collides(isStatic).getMinPenetration().length()*10.0f));
+    return new Vector(0.0f,0.0f);
+
+  }
+
 	/**
 	 * Bounce the ball off a surface. This simple implementation, combined
 	 * with the test used when calling this method can cause "issues" in
@@ -43,6 +48,8 @@ import jig.Vector;
 	 * 
 	 * @param surfaceTangent
 	 */
+
+
 	public void bounce(float surfaceTangent) {
 		//removeImage(ResourceManager.getImage(BounceGame.BALL_BALLIMG_RSC));
 		//addImageWithBoundingBox(ResourceManager

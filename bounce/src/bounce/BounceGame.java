@@ -141,7 +141,7 @@ public class BounceGame extends StateBasedGame {
     for(int i = 0; i < 19; i++) {
       b1.addBrick(new Vector((ScreenWidth / 20.0f) * i + ScreenWidth / 20.0f, 150.0f), 1);
       b2.addBrick(new Vector((ScreenWidth / 20.0f) * i + ScreenWidth / 20.0f, (ScreenHeight/30)*i), 2);
-      b3.addBrick(new Vector(i*40.0f+40.0f, 150.0f+(float)(Math.sin(i*(Math.PI/10.0f))*100.0f)), 2);
+      b3.addBrick(new Vector(i*40.0f+40.0f, 150.0f+(float)(Math.sin(i*(Math.PI/10.0f))*100.0f)), 3);
 
     }
     levelSelector = levels.iterator();

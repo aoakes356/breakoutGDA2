@@ -32,6 +32,11 @@
 - **[25]**  Collision bug causing balls to go straight through bricks after breaking them rather than bouncing.
 - **[27]**  Add a visual q for when the ball will "stick" to the paddle.
 - **[28]**  Make score skill based, not completion based.
+- **[29]**  Tone down the second level a bit, it's wayyy too hard.
+- **[30]**  Add sounds and effects to brick destructions.
+- **[31]**  Add sounds and effects for consecutive brick breaks.
+- **[32]**  Add audio q for when the ball sticks to the paddle.
+- **[33]**  Add audio for when a life is lost.
 
 
 

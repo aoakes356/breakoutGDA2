@@ -183,7 +183,8 @@ class PlayingState extends BasicGameState {
             surfaceAngle = (float) Math.toDegrees(Math.atan2(col.getMinPenetration().getY(), col.getMinPenetration().getX()) + Math.PI / 2.0f);
             if(obj.type == GameObject.GAMEOBJ_NONSTAT) {
               // Translate the object away from the collision more if it's moving quickly
-              obj.translate(-col.getMinPenetration().getX() * (1+Math.abs(((Ball)obj).getVelocity().getX()))*4.0f, -col.getMinPenetration().getY() * (1+Math.abs(((Ball)obj).getVelocity().getY()))*4.0f);
+              Ball.clipEnforce(obj,obj2);
+              //obj.translate(-col.getMinPenetration().getX() * (1+Math.abs(((Ball)obj).getVelocity().getX()))*4.0f, -col.getMinPenetration().getY() * (1+Math.abs(((Ball)obj).getVelocity().getY()))*4.0f);
             }else if(obj.type == GameObject.GAMEOBJ_MOMENT){
               p = (Paddle)obj;
               if(!p.stick) {
@@ -198,7 +199,8 @@ class PlayingState extends BasicGameState {
             }
             if(obj2.type == GameObject.GAMEOBJ_NONSTAT) {
               // Translate the object away from the collision more if it's moving quickly
-              obj2.translate(col.getMinPenetration().getX() * (1+Math.abs(((Ball)obj2).getVelocity().getX()))*4.0f, col.getMinPenetration().getY() * (1+Math.abs(((Ball)obj2).getVelocity().getY()))*4.0f);
+              Ball.clipEnforce(obj2,obj);
+              //obj2.translate(col.getMinPenetration().getX() * (1+Math.abs(((Ball)obj2).getVelocity().getX()))*4.0f, col.getMinPenetration().getY() * (1+Math.abs(((Ball)obj2).getVelocity().getY()))*4.0f);
             }else if(obj2.type == GameObject.GAMEOBJ_MOMENT){
               p = (Paddle)obj2;
               bounces++;
