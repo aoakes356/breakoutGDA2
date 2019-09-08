@@ -44,6 +44,7 @@ class PlayingState extends BasicGameState {
 		container.setSoundOn(true);
     BounceGame bg = ((BounceGame)game);
     bg.paddle.giveBall(bg.ball);
+    bg.paddle.hits = 0;
     bg.nextLevel();
 	}
 	@Override
@@ -56,12 +57,10 @@ class PlayingState extends BasicGameState {
 	    if(currentObj.active) {
         currentObj.render(g);
       }else{
-	      System.out.println("Deleting le brick.");
 	      isChanged = true;
 	      if(currentObj.type == GameObject.GAMEOBJ_STAT) {
-	        System.out.println("Adding to the score!");
-          bg.score += ((Brick) currentObj).getStartingLives();
-          scoreDelta += ((Brick) currentObj).getStartingLives();
+          bg.score += ((Brick) currentObj).getStartingLives()*(bg.paddle.hits+1);
+          scoreDelta += ((Brick) currentObj).getStartingLives()*(bg.paddle.hits+1);
         }
 	      it.remove();
       }
@@ -104,9 +103,7 @@ class PlayingState extends BasicGameState {
         bg.paddle.takeBall();
         bg.paddle.stick = false;
         bg.explosions.add(new Bang(bg.paddle.getX(),bg.paddle.getY()));
-        System.out.println("Paddle WILL NOT grab ball now.");
       }else{
-        System.out.println("Paddle should grab ball now.");
 		    bg.paddle.stick = true;
       }
 
@@ -130,6 +127,7 @@ class PlayingState extends BasicGameState {
     }
 
       bg.nextLevel();
+      bounces = 0;
     }
 		// bounce the ball...
     GameObject obj,obj2;
@@ -156,6 +154,7 @@ class PlayingState extends BasicGameState {
           game.enterState(BounceGame.GAMEOVERSTATE);
         }
         bg.paddle.giveBall((Ball)obj);
+        bg.paddle.hits = 0;
         bounced = true;
       }else if(obj.getCoarseGrainedMinY() < 0) {
         obj.translate(0.0f, -obj.getCoarseGrainedMinY()+.001f);
@@ -204,9 +203,10 @@ class PlayingState extends BasicGameState {
             }else if(obj2.type == GameObject.GAMEOBJ_MOMENT){
               p = (Paddle)obj2;
               bounces++;
+              p.hits++;
               velocity = ((Ball) obj).getVelocity().scale(1.01f);
               ((Ball) obj).setVelocity(velocity);
-              if(bounces%10 == 0) {
+              if(p.hits == 10) {
                 p.giveBall((Ball) obj);
               }
             }
@@ -248,8 +248,6 @@ class PlayingState extends BasicGameState {
       }
     }
 
-		if (bounces >= 10000) {
-		}
 	}
 
 	@Override

@@ -9,7 +9,10 @@ public class Paddle extends GameObject{
 	private int countdown;
 	public boolean hasBall = false;
 	public boolean stick = false;
+	public int hits = 0;
+	private int oldHits = 0;
 	private Ball ball;
+	private String currentImage;
 
 	public Paddle(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
@@ -17,6 +20,7 @@ public class Paddle extends GameObject{
 		setType(GameObject.GAMEOBJ_MOMENT);
 		addImageWithBoundingBox(ResourceManager
         .getImage(BounceGame.PADDLE_BASIC_RSC));
+		currentImage = BounceGame.PADDLE_BASIC_RSC;
 		velocity = new Vector(vx, 0.0f);
 	}
 
@@ -59,6 +63,19 @@ public class Paddle extends GameObject{
 	  hasBall = false;
   }
 
+  public void updateImage(){
+	  if(hits > 10) {
+	    hits = 0;
+    }
+    removeImage(ResourceManager.getImage(currentImage));
+	  if(hits > 0) {
+      currentImage = "bounce/resource/basic_paddle" + hits + ".png";
+    }else{
+	    currentImage = BounceGame.PADDLE_BASIC_RSC;
+    }
+    addImage(ResourceManager.getImage(currentImage));
+  }
+
 	/**
 	 * Update the Ball based on how much time has passed...
 	 *
@@ -70,6 +87,10 @@ public class Paddle extends GameObject{
 	  velocity = velocity.scale(.95f);
 	  velocity.setY(0);
 		translate(velocity.scale(delta));
+		if(hits != oldHits){
+		  oldHits = hits;
+		  updateImage();
+    }
 		if(hasBall){
 		  ball.translate(velocity.scale(delta));
     }

@@ -39,7 +39,7 @@ class StartUpState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 		BounceGame bg = (BounceGame)game;
-		
+
 		bg.ball.render(g);
 		g.drawString("Bounces: ?", 10, 30);
 		for (Bang b : bg.explosions)

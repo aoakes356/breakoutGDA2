@@ -51,7 +51,7 @@ public class BounceGame extends StateBasedGame {
 	public static final int GAMEOVERSTATE = 2;
 	public static final int GAMEWONSTATE = 3;
 	public static final int ROUNDWONSTATE = 4;
-	
+	public static final int SPLASH_STATE = 5;
 	public static final String BALL_BALLIMG_RSC = "bounce/resource/redBall.png";
 	public static final String BALL_BROKENIMG_RSC = "bounce/resource/redBall.png";
 	public static final String BALL_SMALLBALL_RSC = "bounce/resource/smallBall.png";
@@ -133,7 +133,11 @@ public class BounceGame extends StateBasedGame {
     ResourceManager.loadImage(ROUND_OVER_BANNER);
     ResourceManager.loadImage(GAME_WON_BANNER);
     ResourceManager.loadImage(SPLASH_BANNER);
-
+    String fname;
+    for(int i = 1; i < 11; i++){
+      fname = "bounce/resource/basic_paddle"+i+".png";
+      ResourceManager.loadImage(fname);
+    }
     levels = new ArrayList<>();
     BrickStack b1 = new BrickStack();
     BrickStack b2 = new BrickStack();
@@ -156,11 +160,13 @@ public class BounceGame extends StateBasedGame {
 	}
 
 	public void nextLevel(){
+	  paddle.hits = 0;
     if(currentLevel == null){
       currentLevel = levelSelector.next();
       gameObjects.addAll(currentLevel.bricks);
     }else{
-      if(currentLevel.isWon()){
+      if(currentLevel.isWon() && levelSelector.hasNext()){
+        currentLevel.reset();
         currentLevel = levelSelector.next();
         gameObjects.addAll(currentLevel.bricks);
       }else{

@@ -24,6 +24,9 @@ public class SplashState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		timer = 4000;
+		BounceGame bg = (BounceGame)game;
+		bg.levelSelector = bg.levels.iterator();
+
 	}
 
 
@@ -49,6 +52,6 @@ public class SplashState extends BasicGameState {
 
 	@Override
 	public int getID() {
-		return BounceGame.GAMEOVERSTATE;
+		return BounceGame.SPLASH_STATE;
 	}
 }

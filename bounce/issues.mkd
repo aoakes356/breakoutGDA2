@@ -37,6 +37,7 @@
 - **[31]**  Add sounds and effects for consecutive brick breaks.
 - **[32]**  Add audio q for when the ball sticks to the paddle.
 - **[33]**  Add audio for when a life is lost.
+- **[34]**  Make startup state entertaining.
 
 
 
