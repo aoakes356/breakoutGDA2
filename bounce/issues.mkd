@@ -24,12 +24,12 @@
 - **[22]**  Make a game won state that displays the splash screen.
 - **[23]**  Display the number of lives left.
 - **[26]**  Keep track of the score as the game progresses.
+- **[25]**  Collision bug causing balls to go straight through bricks after breaking them rather than bouncing.
+- **[24]**  Upon round reset, not all the blocks are coming back.
+- **[19]**  Make a splash screen
 
 ## Open Issues ##
 
-- **[19]**  Make a splash screen
-- **[24]**  Upon round reset, not all the blocks are coming back.
-- **[25]**  Collision bug causing balls to go straight through bricks after breaking them rather than bouncing.
 - **[27]**  Add a visual q for when the ball will "stick" to the paddle.
 - **[28]**  Make score skill based, not completion based.
 - **[29]**  Tone down the second level a bit, it's wayyy too hard.

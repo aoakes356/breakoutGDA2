@@ -66,6 +66,7 @@ public class BounceGame extends StateBasedGame {
   public static final String BRICK_SMALL3_RSC = "bounce/resource/smallBrick3.png";
   public static final String ROUND_OVER_BANNER = "bounce/resource/RoundOver.png";
   public static final String GAME_WON_BANNER = "bounce/resource/GameWon.png";
+  public static final String SPLASH_BANNER = "bounce/resource/Splash-Screen.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -103,12 +104,13 @@ public class BounceGame extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
+    addState(new SplashState());
 		addState(new StartUpState());
 		addState(new GameOverState());
 		addState(new PlayingState());
 		addState(new RoundWonState());
 		addState(new GameWonState());
-		
+
 		// the sound resource takes a particularly long time to load,
 		// we preload it here to (1) reduce latency when we first play it
 		// and (2) because loading it will load the audio libraries and
@@ -130,6 +132,7 @@ public class BounceGame extends StateBasedGame {
     ResourceManager.loadImage(BRICK_SMALL3_RSC);
     ResourceManager.loadImage(ROUND_OVER_BANNER);
     ResourceManager.loadImage(GAME_WON_BANNER);
+    ResourceManager.loadImage(SPLASH_BANNER);
 
     levels = new ArrayList<>();
     BrickStack b1 = new BrickStack();

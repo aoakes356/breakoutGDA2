@@ -32,10 +32,13 @@ import jig.*;
 		return velocity;
 	}
 
+	// Fixes the collision logic.
   public static Vector clipEnforce(GameObject nonStatic, GameObject isStatic){
     Vector vel = ((Ball)nonStatic).getVelocity();
-    Vector unitVel = vel.unit();
-    nonStatic.translate(unitVel.scale(-nonStatic.collides(isStatic).getMinPenetration().length()*10.0f));
+    while(nonStatic.collides(isStatic) != null){
+      nonStatic.translate(vel.scale(-2));
+    }
+    //nonStatic.translate(unitVel.scale(-nonStatic.collides(isStatic).getMinPenetration().length()*10.0f));
     return new Vector(0.0f,0.0f);
 
   }
