@@ -67,6 +67,8 @@ public class BounceGame extends StateBasedGame {
   public static final String ROUND_OVER_BANNER = "bounce/resource/RoundOver.png";
   public static final String GAME_WON_BANNER = "bounce/resource/GameWon.png";
   public static final String SPLASH_BANNER = "bounce/resource/Splash-Screen.png";
+  public static final String LOST_LIFE_SOUND = "bounce/resource/lostLife.wav";
+  public static final String BOUNCE_SOUND = "bounce/resource/bounce.wav";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -117,6 +119,8 @@ public class BounceGame extends StateBasedGame {
 		// unless that is done now, we can't *disable* sound as we
 		// attempt to do in the startUp() method.
 		ResourceManager.loadSound(BANG_EXPLOSIONSND_RSC);
+		ResourceManager.loadSound(LOST_LIFE_SOUND);
+		ResourceManager.loadSound(BOUNCE_SOUND);
 
 		// preload all the resources to avoid warnings & minimize latency...
 		ResourceManager.loadImage(BALL_BALLIMG_RSC);

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import bounce.GameObject;
 import jig.Collision;
 import jig.Entity;
+import jig.ResourceManager;
 import jig.Vector;
 
 import org.newdawn.slick.*;
@@ -148,7 +149,8 @@ class PlayingState extends BasicGameState {
         obj.collide(90.0f);
         bounced = true;
       }else if(obj.type == GameObject.GAMEOBJ_NONSTAT && obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
-        if(lives-- <= 0) {
+        ResourceManager.getSound(bg.LOST_LIFE_SOUND).play();
+        if(lives-- <= 1) {
           bg.score -= scoreDelta;
           ((GameOverState) game.getState(BounceGame.GAMEOVERSTATE)).setUserScore(bounces);
           game.enterState(BounceGame.GAMEOVERSTATE);
@@ -179,6 +181,7 @@ class PlayingState extends BasicGameState {
         if(!obj2.equals(obj)) {
           col = obj2.collides(obj);
           if (col != null){
+            ResourceManager.getSound(bg.BOUNCE_SOUND).play();
             surfaceAngle = (float) Math.toDegrees(Math.atan2(col.getMinPenetration().getY(), col.getMinPenetration().getX()) + Math.PI / 2.0f);
             if(obj.type == GameObject.GAMEOBJ_NONSTAT) {
               // Translate the object away from the collision more if it's moving quickly
