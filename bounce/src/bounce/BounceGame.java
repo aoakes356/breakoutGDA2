@@ -157,7 +157,7 @@ public class BounceGame extends StateBasedGame {
     }
     levelSelector = levels.iterator();
 		ball = new Ball(ScreenWidth, ScreenHeight, 0.0f, 0.0f);
-		paddle = new Paddle(ScreenWidth/2.0f,ScreenHeight,0.0f,0.0f);
+		paddle = new Paddle(ScreenWidth/2.0f,ScreenHeight-20,0.0f,0.0f);
 		gameObjects.add(ball);
 		gameObjects.add(paddle);
 

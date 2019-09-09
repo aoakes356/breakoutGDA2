@@ -6,6 +6,7 @@ import jig.Vector;
 
 public class Paddle extends GameObject{
   private Vector velocity;
+  private Vector startPos;
 	private int countdown;
 	public boolean hasBall = false;
 	public boolean stick = false;
@@ -22,6 +23,7 @@ public class Paddle extends GameObject{
         .getImage(BounceGame.PADDLE_BASIC_RSC));
 		currentImage = BounceGame.PADDLE_BASIC_RSC;
 		velocity = new Vector(vx, 0.0f);
+		startPos = new Vector(getX(),getY());
 	}
 
 	public void setVelocity(final Vector v) {
@@ -44,7 +46,8 @@ public class Paddle extends GameObject{
 		//removeImage(ResourceManager.getImage(BounceGame.BALL_BALLIMG_RSC));
 		//addImageWithBoundingBox(ResourceManager
 		//		.getImage(BounceGame.BALL_BROKENIMG_RSC));
-		velocity.setX(0);
+    velocity = velocity.bounce(surfaceTangent);
+		velocity.setY(0);
 	}
 
 	@Override
@@ -85,15 +88,15 @@ public class Paddle extends GameObject{
 	@Override
 	public void update(final int delta) {
 	  velocity = velocity.scale(.95f);
-	  velocity.setY(0);
-		translate(velocity.scale(delta));
+		translate(velocity.scale(delta).getX(),0.0f);
 		if(hits != oldHits){
 		  oldHits = hits;
 		  updateImage();
     }
 		if(hasBall){
-		  ball.translate(velocity.scale(delta));
+		  ball.translate(velocity.scale(delta).getX(),0.0f);
     }
+    setY(startPos.getY());
 	}
 
 }
