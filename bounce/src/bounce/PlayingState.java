@@ -92,10 +92,10 @@ class PlayingState extends BasicGameState {
       bg.currentLevel.nukeBricks();
     }
 		if (input.isKeyDown(Input.KEY_A)) {
-			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(-.040f, 0)));
+			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(-.060f, 0)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(+.040f, 0f)));
+			bg.paddle.setVelocity(bg.paddle.getVelocity().add(new Vector(+.060f, 0f)));
 		}
     if(input.isKeyPressed(Input.MOUSE_LEFT_BUTTON) || input.isKeyPressed(Input.KEY_ENTER)){
       if(bg.paddle.hasBall) {

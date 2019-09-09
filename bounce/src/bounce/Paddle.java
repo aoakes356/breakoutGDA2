@@ -87,11 +87,14 @@ public class Paddle extends GameObject{
 	 */
 	@Override
 	public void update(final int delta) {
-	  velocity = velocity.scale(.95f);
+	  velocity = velocity.scale(.93f);
 		translate(velocity.scale(delta).getX(),0.0f);
 		if(hits != oldHits){
 		  oldHits = hits;
 		  updateImage();
+		  if(!hasBall) {
+        ball.setVelocity(ball.getVelocity().add(getVelocity().scale(.25f)));
+      }
     }
 		if(hasBall){
 		  ball.translate(velocity.scale(delta).getX(),0.0f);

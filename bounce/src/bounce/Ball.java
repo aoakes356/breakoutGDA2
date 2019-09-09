@@ -79,8 +79,8 @@ import jig.*;
 	@Override
 	public void update(final int delta) {
 	  float speed = velocity.length();
-	  if(speed > 2){
-	    velocity = velocity.scale(2.0f/speed);
+	  if(speed > .75){
+	    velocity = velocity.scale(.95f);
     }
 		translate(velocity.scale(delta));
 		if (countdown > 0) {

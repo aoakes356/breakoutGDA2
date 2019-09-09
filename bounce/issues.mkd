@@ -35,11 +35,11 @@ REMOVED ISSUES(- **[30]**  Add sounds and effects to brick destructions.
 - **[32]**  Add audio q for when the ball sticks to the paddle.)
 - **[34]**  Make startup state entertaining.
 - **[35]**  Make a README with instructions and stuff.
+- **[37]**  fix collisions more.
+- **[38]**  Add direction control to the paddle.
 
 ## Open Issues ##
 
 - **[29]**  Tone down the second level a bit, it's wayyy too hard.
 - **[36]**  Add the rest of the cheat codes.
-- **[37]**  fix collisions more.
 
- 
