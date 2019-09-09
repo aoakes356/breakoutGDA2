@@ -39,7 +39,7 @@ REMOVED ISSUES(- **[30]**  Add sounds and effects to brick destructions.
 ## Open Issues ##
 
 - **[29]**  Tone down the second level a bit, it's wayyy too hard.
-
-
+- **[36]**  Add the rest of the cheat codes.
+- **[37]**  fix collisions more.
 
  
