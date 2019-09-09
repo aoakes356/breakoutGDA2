@@ -33,12 +33,12 @@
 REMOVED ISSUES(- **[30]**  Add sounds and effects to brick destructions.
 - **[31]**  Add sounds and effects for consecutive brick breaks.
 - **[32]**  Add audio q for when the ball sticks to the paddle.)
+- **[34]**  Make startup state entertaining.
+- **[35]**  Make a README with instructions and stuff.
 
 ## Open Issues ##
 
 - **[29]**  Tone down the second level a bit, it's wayyy too hard.
-- **[34]**  Make startup state entertaining.
-
 
 
 
