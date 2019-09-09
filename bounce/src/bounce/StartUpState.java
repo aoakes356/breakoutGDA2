@@ -5,6 +5,7 @@ import java.util.Iterator;
 import bounce.GameObject;
 import jig.ResourceManager;
 
+import jig.Vector;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -23,7 +24,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * Transitions To PlayingState
  */
 class StartUpState extends BasicGameState {
-
+  private Vector gravity;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -31,7 +32,10 @@ class StartUpState extends BasicGameState {
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
-		container.setSoundOn(false);
+		float gravityX = (float)Math.random();
+		float gravityY = (float)Math.random();
+		gravity = new Vector(gravityX,gravityY).scale(.1f);
+	  container.setSoundOn(false);
 	}
 
 
@@ -56,8 +60,19 @@ class StartUpState extends BasicGameState {
 		BounceGame bg = (BounceGame)game;
 
 		if (input.isKeyDown(Input.KEY_SPACE))
-			bg.enterState(BounceGame.PLAYINGSTATE);	
-		
+			bg.enterState(BounceGame.PLAYINGSTATE);
+
+    if (input.isKeyDown(Input.KEY_A)) {
+      bg.ball.setVelocity(bg.ball.getVelocity().add((new Vector(-gravity.getY(),gravity.getX())).scale(2.0f)));
+    }
+    if (input.isKeyDown(Input.KEY_D)) {
+      bg.ball.setVelocity(bg.ball.getVelocity().add((new Vector(gravity.getY(),-gravity.getX())).scale(2.0f)));
+    }
+    if (input.isKeyDown(Input.KEY_UP)) {
+      bg.ball.setVelocity(bg.ball.getVelocity().add(gravity.scale(2.0f)));
+    }
+    bg.ball.setVelocity(bg.ball.getVelocity().subtract(gravity));
+    bg.ball.setVelocity(bg.ball.getVelocity().scale(.95f));
 		// bounce the ball...
 		GameObject obj;
 		boolean bounced;
@@ -81,20 +96,8 @@ class StartUpState extends BasicGameState {
         obj.collide(0);
         bounced = true;
       }
-      if (bounced) {
-        bg.explosions.add(new Bang(obj.getX(), obj.getY()));
-      }
       obj.update(delta);
     }
-
-
-		// check if there are any finished explosions, if so remove them
-		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
-			if (!i.next().isActive()) {
-				i.remove();
-			}
-		}
-
 	}
 
 	@Override
