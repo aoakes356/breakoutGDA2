@@ -87,6 +87,10 @@ class PlayingState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_S)) {
 			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.010f)));
 		}*/
+
+		if(input.isKeyDown(Input.KEY_UP)){
+		  lives ++;
+    }
 		if(input.isKeyPressed(Input.KEY_F)){
 		  /** Press F to pay respects. **/
       bg.currentLevel.nukeBricks();
@@ -110,26 +114,16 @@ class PlayingState extends BasicGameState {
 
     }
     if(input.isKeyPressed(Input.KEY_TAB)){
-      Brick temp;
-      for(Iterator<Brick> it = bg.currentLevel.bricks.iterator();it.hasNext();){
-        temp = it.next();
-        if(temp != null){
-          temp.active = false;
-        }
-      }
-      GameObject obj;
-      for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
-        obj = e.next();
-        if (obj == null || !obj.active) {
-          e.remove();
-        }else {
-          obj.update(delta);
-        }
-    }
-
       bg.nextLevel();
+      lives = 3;
       bounces = 0;
     }
+    if(input.isKeyPressed(Input.KEY_BACK)){
+      bg.previousLevel();
+      System.out.println("Previous level");
+    }
+
+
 		// bounce the ball...
     GameObject obj,obj2;
 		boolean bounced;

@@ -80,6 +80,7 @@ public class BounceGame extends StateBasedGame {
 	public ArrayList<Bang> explosions;
 	public Iterator<BrickStack> levelSelector;
   public int score;
+  public int level;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -101,6 +102,7 @@ public class BounceGame extends StateBasedGame {
 		gameObjects = new ArrayList<GameObject>(50);
     currentLevel = null;
     score = 0;
+    level = 0;
 	}
 
 
@@ -163,15 +165,40 @@ public class BounceGame extends StateBasedGame {
 
 	}
 
+	public void previousLevel(){
+    if(level == 1){
+      return;
+    }
+	  currentLevel.reset();
+	  levelSelector = levels.iterator();
+	  int i = 0;
+	  while(i < level-1){
+	    i++;
+	    if(levelSelector.hasNext()) {
+        currentLevel = levelSelector.next();
+      }
+    }
+    level--;
+    gameObjects.removeIf(n-> (n.type == GameObject.GAMEOBJ_STAT));
+    gameObjects.addAll(currentLevel.bricks);
+    paddle.giveBall(ball);
+  }
+
 	public void nextLevel(){
+	  if(level >= 3){
+	    return;
+    }
+	  level++;
 	  paddle.hits = 0;
     if(currentLevel == null){
       currentLevel = levelSelector.next();
+      gameObjects.removeIf(n-> (n.type == GameObject.GAMEOBJ_STAT));
       gameObjects.addAll(currentLevel.bricks);
     }else{
-      if(currentLevel.isWon() && levelSelector.hasNext()){
+      if(levelSelector.hasNext()){
         currentLevel.reset();
         currentLevel = levelSelector.next();
+        gameObjects.removeIf(n-> (n.type == GameObject.GAMEOBJ_STAT));
         gameObjects.addAll(currentLevel.bricks);
       }else{
         Brick temp = null;
@@ -185,6 +212,7 @@ public class BounceGame extends StateBasedGame {
 
       }
     }
+    paddle.giveBall(ball);
   }
 	
 	public static void main(String[] args) {
