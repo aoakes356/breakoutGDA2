@@ -1,8 +1,7 @@
 package bounce;
 
-import jig.Entity;
-import jig.ResourceManager;
-import jig.Vector;
+import bounce.GameObject;
+import jig.*;
 
 /**
  * The Ball class is an Entity that has a velocity (since it's moving). When
@@ -10,15 +9,17 @@ import jig.Vector;
  * cracks for a nice visual effect.
  * 
  */
- class Ball extends Entity {
+ class Ball extends GameObject {
 
 	private Vector velocity;
 	private int countdown;
 
 	public Ball(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
-		addImageWithBoundingBox(ResourceManager
-				.getImage(BounceGame.BALL_BALLIMG_RSC));
+		setType(GameObject.GAMEOBJ_NONSTAT);
+		addShape(new ConvexPolygon(20,20));
+		addImage(ResourceManager
+				.getImage(BounceGame.BALL_SMALLBALL_RSC));
 		velocity = new Vector(vx, vy);
 		countdown = 0;
 	}
@@ -31,6 +32,21 @@ import jig.Vector;
 		return velocity;
 	}
 
+	// Fixes the collision logic.
+  public static Vector clipEnforce(GameObject nonStatic, GameObject isStatic){
+    Vector vel = ((Ball)nonStatic).getVelocity();
+    Collision c;
+    while((c = nonStatic.collides(isStatic)) != null){
+      nonStatic.translate(c.getMinPenetration().scale(.5f));
+      if(isStatic.type == GameObject.GAMEOBJ_MOMENT){
+        isStatic.translate(c.getMinPenetration().scale(-.5f));
+      }
+    }
+    //nonStatic.translate(unitVel.scale(-nonStatic.collides(isStatic).getMinPenetration().length()*10.0f));
+    return new Vector(0.0f,0.0f);
+
+  }
+
 	/**
 	 * Bounce the ball off a surface. This simple implementation, combined
 	 * with the test used when calling this method can cause "issues" in
@@ -39,13 +55,20 @@ import jig.Vector;
 	 * 
 	 * @param surfaceTangent
 	 */
+
+
 	public void bounce(float surfaceTangent) {
-		removeImage(ResourceManager.getImage(BounceGame.BALL_BALLIMG_RSC));
-		addImageWithBoundingBox(ResourceManager
-				.getImage(BounceGame.BALL_BROKENIMG_RSC));
+		//removeImage(ResourceManager.getImage(BounceGame.BALL_BALLIMG_RSC));
+		//addImageWithBoundingBox(ResourceManager
+		//		.getImage(BounceGame.BALL_BROKENIMG_RSC));
 		countdown = 500;
 		velocity = velocity.bounce(surfaceTangent);
 	}
+
+	@Override
+  public void collide(float tangent){
+    bounce(tangent);
+  }
 
 	/**
 	 * Update the Ball based on how much time has passed...
@@ -53,12 +76,17 @@ import jig.Vector;
 	 * @param delta
 	 *            the number of milliseconds since the last update
 	 */
+	@Override
 	public void update(final int delta) {
+	  float speed = velocity.length();
+	  if(speed > .75){
+	    velocity = velocity.scale(.95f);
+    }
 		translate(velocity.scale(delta));
 		if (countdown > 0) {
 			countdown -= delta;
 			if (countdown <= 0) {
-				addImageWithBoundingBox(ResourceManager
+				addImage(ResourceManager
 						.getImage(BounceGame.BALL_BALLIMG_RSC));
 				removeImage(ResourceManager
 						.getImage(BounceGame.BALL_BROKENIMG_RSC));

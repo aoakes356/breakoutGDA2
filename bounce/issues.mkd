@@ -8,6 +8,38 @@
 - **[6]** Add explosion sound
 - **[7]** Use a proper Slick StateBasedGame.
 - **[8]** Use fully specified resource path, preload resources if possible
+- **[9]**   Collision detection sometimes allows the block to clip into a wall and it gets stuck constantly
+            bouncing back and forth. Adjust logic.
+- **[10]**  Change the square to a circle.
+- **[11]**  make a brick game Object.
+- **[12]**  make a paddle Object
+- **[13]**  (Optional) Make acceleration based physics for paddle and ball.
+- **[17]**  Switch to simple flat paddle.
+- **[15]**  Make the ball start on the paddle, click or space to launch ball.
+- **[16]**  Allow "Capturing" of the ball, in order to launch at the desired location.
+- **[20]**  Make bricks and the ball a bit smaller.
+- **[14]**  Make levels out of the new entities.
+- **[18]**  Make new kinds of bricks.
+- **[21]**  Make a round won state.
+- **[22]**  Make a game won state that displays the splash screen.
+- **[23]**  Display the number of lives left.
+- **[26]**  Keep track of the score as the game progresses.
+- **[25]**  Collision bug causing balls to go straight through bricks after breaking them rather than bouncing.
+- **[24]**  Upon round reset, not all the blocks are coming back.
+- **[19]**  Make a splash screen
+- **[27]**  Add a visual q for when the ball will "stick" to the paddle.
+- **[28]**  Make score skill based, not completion based.
+- **[33]**  Add audio for when a life is lost.
+REMOVED ISSUES(- **[30]**  Add sounds and effects to brick destructions.
+- **[31]**  Add sounds and effects for consecutive brick breaks.
+- **[32]**  Add audio q for when the ball sticks to the paddle.)
+- **[34]**  Make startup state entertaining.
+- **[35]**  Make a README with instructions and stuff.
+- **[37]**  fix collisions more.
+- **[38]**  Add direction control to the paddle.
+- **[36]**  Add the rest of the cheat codes.
 
 ## Open Issues ##
- 
+
+- **[29]**  Tone down the second level a bit, it's wayyy too hard.
+

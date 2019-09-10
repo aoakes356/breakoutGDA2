@@ -2,8 +2,10 @@ package bounce;
 
 import java.util.Iterator;
 
+import bounce.GameObject;
 import jig.ResourceManager;
 
+import jig.Vector;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -22,7 +24,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * Transitions To PlayingState
  */
 class StartUpState extends BasicGameState {
-
+  private Vector gravity;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -30,7 +32,10 @@ class StartUpState extends BasicGameState {
 	
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
-		container.setSoundOn(false);
+		float gravityX = (float)Math.random();
+		float gravityY = (float)Math.random();
+		gravity = new Vector(gravityX,gravityY).scale(.1f);
+	  container.setSoundOn(false);
 	}
 
 
@@ -38,7 +43,7 @@ class StartUpState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 		BounceGame bg = (BounceGame)game;
-		
+
 		bg.ball.render(g);
 		g.drawString("Bounces: ?", 10, 30);
 		for (Bang b : bg.explosions)
@@ -55,31 +60,44 @@ class StartUpState extends BasicGameState {
 		BounceGame bg = (BounceGame)game;
 
 		if (input.isKeyDown(Input.KEY_SPACE))
-			bg.enterState(BounceGame.PLAYINGSTATE);	
-		
+			bg.enterState(BounceGame.PLAYINGSTATE);
+
+    if (input.isKeyDown(Input.KEY_A)) {
+      bg.ball.setVelocity(bg.ball.getVelocity().add((new Vector(-gravity.getY(),gravity.getX())).scale(2.0f)));
+    }
+    if (input.isKeyDown(Input.KEY_D)) {
+      bg.ball.setVelocity(bg.ball.getVelocity().add((new Vector(gravity.getY(),-gravity.getX())).scale(2.0f)));
+    }
+    if (input.isKeyDown(Input.KEY_UP)) {
+      bg.ball.setVelocity(bg.ball.getVelocity().add(gravity.scale(2.0f)));
+    }
+    bg.ball.setVelocity(bg.ball.getVelocity().subtract(gravity));
+    bg.ball.setVelocity(bg.ball.getVelocity().scale(.95f));
 		// bounce the ball...
-		boolean bounced = false;
-		if (bg.ball.getCoarseGrainedMaxX() > bg.ScreenWidth
-				|| bg.ball.getCoarseGrainedMinX() < 0) {
-			bg.ball.bounce(90);
-			bounced = true;
-		} else if (bg.ball.getCoarseGrainedMaxY() > bg.ScreenHeight
-				|| bg.ball.getCoarseGrainedMinY() < 0) {
-			bg.ball.bounce(0);
-			bounced = true;
-		}
-		if (bounced) {
-			bg.explosions.add(new Bang(bg.ball.getX(), bg.ball.getY()));
-		}
-		bg.ball.update(delta);
-
-		// check if there are any finished explosions, if so remove them
-		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
-			if (!i.next().isActive()) {
-				i.remove();
-			}
-		}
-
+		GameObject obj;
+		boolean bounced;
+    for(Iterator<GameObject> e = bg.gameObjects.iterator(); e.hasNext();) {
+      obj = e.next();
+      bounced = false;
+      if (obj.getCoarseGrainedMaxX() > bg.ScreenWidth){
+        obj.translate( -obj.getCoarseGrainedMaxX()+bg.ScreenWidth-.001f,0.0f);
+        obj.collide(90.0f);
+        bounced = true;
+      }else if(obj.getCoarseGrainedMinX() < 0) {
+        obj.translate(-obj.getCoarseGrainedMinX()+.001f, 0.0f);
+        obj.collide(90.0f);
+        bounced = true;
+      } else if (obj.getCoarseGrainedMaxY() > bg.ScreenHeight){
+        obj.translate( 0.0f,-obj.getCoarseGrainedMaxY()+bg.ScreenHeight-.001f);
+        obj.collide(0);
+        bounced = true;
+      }else if(obj.getCoarseGrainedMinY() < 0) {
+        obj.translate(0.0f, -obj.getCoarseGrainedMinY()+.001f);
+        obj.collide(0);
+        bounced = true;
+      }
+      obj.update(delta);
+    }
 	}
 
 	@Override
