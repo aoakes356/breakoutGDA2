@@ -42,4 +42,5 @@ REMOVED ISSUES(- **[30]**  Add sounds and effects to brick destructions.
 ## Open Issues ##
 
 - **[29]**  Tone down the second level a bit, it's wayyy too hard.
+- **[39]**  WOOPS, levels progressing regardless of if won. quick fix.
 
