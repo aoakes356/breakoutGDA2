@@ -46,7 +46,18 @@ class PlayingState extends BasicGameState {
     BounceGame bg = ((BounceGame)game);
     bg.paddle.giveBall(bg.ball);
     bg.paddle.hits = 0;
-    bg.nextLevel();
+    if( bg.currentLevel == null || bg.currentLevel.isWon()) {
+      bg.nextLevel();
+    }else{
+      Brick temp = null;
+      for(Iterator<Brick> it = bg.currentLevel.bricks.iterator(); it.hasNext();){
+        temp = it.next();
+        if(temp != null && !bg.gameObjects.contains(temp)){
+          bg.gameObjects.add(temp);
+        }
+      }
+      bg.currentLevel.reset();
+    }
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game,

@@ -195,7 +195,7 @@ public class BounceGame extends StateBasedGame {
       gameObjects.removeIf(n-> (n.type == GameObject.GAMEOBJ_STAT));
       gameObjects.addAll(currentLevel.bricks);
     }else{
-      if(levelSelector.hasNext() && currentLevel.isWon()){
+      if(levelSelector.hasNext()){
         currentLevel.reset();
         currentLevel = levelSelector.next();
         gameObjects.removeIf(n-> (n.type == GameObject.GAMEOBJ_STAT));
